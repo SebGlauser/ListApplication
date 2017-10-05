@@ -26,18 +26,22 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Declaration of the simple list of string
+    // Simple list requirement
     private ArrayList<String> itemsSimpleListArray = new ArrayList<String>();
     private ArrayAdapter simpleAAdapter;
     private ListView simpleListView;
 
-    public ArrayList<AndroidVersion> androidList = new ArrayList<AndroidVersion>();
-    public AndroidAdapter customAdapter;
+    // Custom list requirement
+    private ArrayList<AndroidVersion> androidList = new ArrayList<AndroidVersion>();
+    private AndroidAdapter customAdapter;
     private ListView customListView;
 
+    // Drawer requirement
     private String[] mMenuSections;
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList; private ActionBarDrawerToggle mDrawerToggle;
+    private ListView mDrawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
 
         // Simple list
@@ -86,10 +91,12 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Use a function of the activity to gain access to the class variables
                 addNewItem();
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -115,11 +122,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
     /**
-     * @brief Create an AlertDialog to create and the user quit successfully the dialog
+     * @brief Create an AlertDialog to create an item when user quit successfully the dialog
      */
     public void addNewItem() {
+        // Instanciate an alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView =
@@ -127,19 +134,31 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle("Add new item")
                 .setView(dialogView);
         final TextView newItemTextField = (EditText)dialogView.findViewById(R.id.newItemEditText);
-        // Add the buttons
+
+        // Add buttons and their listener
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+
                 itemsSimpleListArray.add(String.valueOf(newItemTextField.getText()));
                 simpleAAdapter.notifyDataSetChanged();
+
+                // Inform that the item has been successfully added
+                Snackbar mySnackbar = Snackbar.make(findViewById(R.id.myCoordinatorLayout),
+                        R.string.addItemSuccesfully, Snackbar.LENGTH_SHORT);
+                mySnackbar.show();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog
+
+                // Inform the user that the dialog has been quit by abortion ;)
+                Snackbar mySnackbar = Snackbar.make(findViewById(R.id.myCoordinatorLayout),
+                        R.string.addItemAborted, Snackbar.LENGTH_SHORT);
+                mySnackbar.show();
             }
         });
-        // Create the AlertDialog
+
+        // Build and show
         AlertDialog dialog = builder.create();
         dialog.show();
     }

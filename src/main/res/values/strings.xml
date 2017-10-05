@@ -7,6 +7,8 @@
     <string name="customViewHeader">Custom list:</string>
     <string name="action_add">Add</string>
     <string name="action_modify">Modify</string>
+    <string name="addItemSuccesfully">Item added</string>
+    <string name="addItemAborted">You damn user, you\'re wasting my time</string>
 
     <string-array name="menu_items">
         <item>Simple list</item>
