@@ -73,7 +73,7 @@ public class AndroidAdapter extends ArrayAdapter<AndroidVersion> {
                     + " "
                     + androidVersion.getVersionName());
 
-            title.setText(res.getString(R.string.custom_list_desc).toString()
+            title.setText(res.getString(R.string.custom_list_desc)
                     + " "
                     + androidVersion.getVersionNumber());
         }

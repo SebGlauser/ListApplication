@@ -9,10 +9,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -20,11 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sebastienglauser.listapplication.adapter.AndroidAdapter;
+import com.sebastienglauser.listapplication.listener.DrawerItemClickListener;
 import com.sebastienglauser.listapplication.objects.AndroidVersion;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final String activityName = "MainActivity";
 
     // Simple list requirement
     private ArrayList<String> itemsSimpleListArray = new ArrayList<String>();
@@ -63,6 +68,18 @@ public class MainActivity extends AppCompatActivity {
         itemsSimpleListArray.add("Item2");
         itemsSimpleListArray.add("Item3");
 
+        simpleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view,
+                                    int position, long id) {
+                final String item = (String) parent.getItemAtPosition(position);
+                messageToast(item + " has been pressed");
+
+            }
+
+        });
+
 
 
         //Custom list
@@ -76,6 +93,18 @@ public class MainActivity extends AppCompatActivity {
         androidList.add(new AndroidVersion("Lollipop","5.x"));
         androidList.add(new AndroidVersion("Kitkat","4.4.x"));
 
+        customListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view,
+                                    int position, long id) {
+                final AndroidVersion androidVersion = (AndroidVersion) parent.getItemAtPosition(position);
+                messageToast(androidVersion.getVersionName() + " has been pressed");
+
+            }
+
+        });
+
 
 
         // Drawer
@@ -84,7 +113,22 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList = (ListView) findViewById(R.id.left_drawer_list);
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.left_drawer_cell, mMenuSections));
 
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
+        mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
+                mDrawerLayout, /* DrawerLayout object */
+                R.string.app_name, /* "open drawer" description */
+                R.string.app_name /* "close drawer" description */ ) {
+
+            public void onDrawerClosed(View view) {
+                messageToast("onDrawerClosed");
+            }
+            public void onDrawerOpened(View drawerView) {
+                messageToast("onDrawerOpened");
+            }
+        };
+
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
 
         // Floating Button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -112,9 +156,21 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id)
+        {
+            case R.id.action_settings:
+                messageToast("onOptionsItemSelected settings has been pressed");
+                break;
+
+            case R.id.action_modify:
+                messageToast("onOptionsItemSelected modify has been pressed");
+                break;
+
+            case R.id.action_add:
+                messageToast("onOptionsItemSelected add has been pressed");
+                break;
+
+            default: break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -126,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
      * @brief Create an AlertDialog to create an item when user quit successfully the dialog
      */
     public void addNewItem() {
-        // Instanciate an alert dialog
+        // Instantiate an alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView =
@@ -138,23 +194,18 @@ public class MainActivity extends AppCompatActivity {
         // Add buttons and their listener
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-
                 itemsSimpleListArray.add(String.valueOf(newItemTextField.getText()));
                 simpleAAdapter.notifyDataSetChanged();
 
                 // Inform that the item has been successfully added
-                Snackbar mySnackbar = Snackbar.make(findViewById(R.id.myCoordinatorLayout),
-                        R.string.addItemSuccesfully, Snackbar.LENGTH_SHORT);
-                mySnackbar.show();
+                messageSnack(getResources().getString(R.string.addItemSuccesfully));
+
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-
                 // Inform the user that the dialog has been quit by abortion ;)
-                Snackbar mySnackbar = Snackbar.make(findViewById(R.id.myCoordinatorLayout),
-                        R.string.addItemAborted, Snackbar.LENGTH_SHORT);
-                mySnackbar.show();
+                messageSnack(getResources().getString(R.string.addItemAborted));
             }
         });
 
@@ -163,4 +214,15 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+
+    private void messageToast(String content) {
+        Toast.makeText(this, activityName+": "+ content, Toast.LENGTH_SHORT).show();
+        Log.d(activityName, content);
+    }
+
+    private void messageSnack(String content) {
+        Snackbar.make(findViewById(R.id.myCoordinatorLayout), content, Snackbar.LENGTH_SHORT)
+                .show();
+        Log.d(activityName, content);
+    }
 }

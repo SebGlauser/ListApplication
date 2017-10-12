@@ -12,13 +12,13 @@
     <item
         android:id="@+id/action_add"
         android:orderInCategory="1"
-        android:icon="@drawable/ic_action_add"
+        android:icon="@mipmap/ic_add"
         android:title="@string/action_add"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_modify"
         android:orderInCategory="2"
-        android:icon="@drawable/ic_action_modify"
+        android:icon="@mipmap/ic_edit"
         android:title="@string/action_modify"
         app:showAsAction="ifRoom" />
 

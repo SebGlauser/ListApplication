@@ -42,7 +42,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/customViewHeader"/>
+                android:text="@string/customViewHeader"
+                android:textAppearance="?android:textAppearanceMedium"/>
             />
             <ListView
                 android:layout_width="match_parent"
