@@ -2,6 +2,7 @@ package com.sebastienglauser.listapplication.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +46,9 @@ public class AndroidAdapter extends ArrayAdapter<AndroidVersion> {
     /**
      * @brief getView extends of the ArrayAdapter
      */
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
 
         // inflate layout
@@ -78,7 +80,7 @@ public class AndroidAdapter extends ArrayAdapter<AndroidVersion> {
                     + androidVersion.getVersionNumber());
         }
 
-        // This methode return the view.
+        // This function return the view.
         return view;
     }
 }

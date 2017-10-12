@@ -32,12 +32,12 @@ public class MainActivity extends AppCompatActivity {
     private final String activityName = "MainActivity";
 
     // Simple list requirement
-    private ArrayList<String> itemsSimpleListArray = new ArrayList<String>();
+    private ArrayList<String> itemsSimpleListArray = new ArrayList<>();
     private ArrayAdapter simpleAAdapter;
     private ListView simpleListView;
 
     // Custom list requirement
-    private ArrayList<AndroidVersion> androidList = new ArrayList<AndroidVersion>();
+    private ArrayList<AndroidVersion> androidList = new ArrayList<>();
     private AndroidAdapter customAdapter;
     private ListView customListView;
 
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList = (ListView) findViewById(R.id.left_drawer_list);
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.left_drawer_cell, mMenuSections));
 
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(this));
 
         mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
                 mDrawerLayout, /* DrawerLayout object */
@@ -144,19 +144,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        // Get the id of the id selected
+        int idSelected = item.getItemId();
 
-        switch(id)
+        // In fx of the id selected
+        switch(idSelected)
         {
             case R.id.action_settings:
                 messageToast("onOptionsItemSelected settings has been pressed");
@@ -214,15 +213,24 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-
+    /**
+     * @brief getView extends of the ArrayAdapter
+     * @param content The content of the message
+     */
     private void messageToast(String content) {
         Toast.makeText(this, activityName+": "+ content, Toast.LENGTH_SHORT).show();
         Log.d(activityName, content);
     }
 
+    /**
+     * @brief Create a snack bar on the bottom
+     * @param content The content of the message
+     */
     private void messageSnack(String content) {
         Snackbar.make(findViewById(R.id.myCoordinatorLayout), content, Snackbar.LENGTH_SHORT)
                 .show();
         Log.d(activityName, content);
     }
+
+
 }
